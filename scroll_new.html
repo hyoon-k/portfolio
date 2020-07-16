@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="utf-8" />
+<title>이벤트</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {margin:0; padding:0}
+li {list-style: none;}
+aside {height:80px; background-color: aqua; text-align:center; line-height: 80px;}
+header {position: static; background-color: gray; text-align: center; }
+header.on {position: fixed; top:0; left:0; right:0}
+section {min-height: 100vh;}
+section.num1 {background-color:lime; font-size: 40px; text-align: center;}
+section.num2 {background-color:yellow; padding-top:1px}
+section.num2 > p {margin-top:200px; opacity: 0; transition: all 0.5s ease;}
+section.num2 > p.on {text-align:center; opacity: 1; font-size: 100px; transition: all 0.5s ease;}
+section.num3 {background-color:pink; transition: all 0.5s ease;}
+/* section.num3.on {background-color:green} */
+section.num3 > div {width:100px; height:100px; opacity: 0; background-color: black; transition: all 0.5s ease 1s;}
+section.num3.on > div {opacity: 1; background-color: red;}
+section.num4 {background-color:blue}
+section.num4.on {background-color: purple;}
+section.num4 > div {width: 50px; height: 50px; opacity: 0; background-color:royalblue; transition: all 0.5s ease 1s;}
+section.num4.on > div {opacity: 1; background-color:sandybrown;}
+nav {
+    border:1px solid blue;
+    display: inline-block;
+}
+header nav > a {border:1px solid red}
+body {border:10px solid black}
+
+/* 메뉴 */
+* {margin:0; padding: 0;}
+li {list-style: none}
+ul#photo_list {
+	border:2px solid lime; 
+	display: inline-block; 
+	padding: 10px;
+}
+ul#photo_list > li {
+	border:1px solid orange;  
+	float:left; 
+	padding: 10px; 
+	position: relative;
+}
+ul#photo_list > li > a {
+	border:1px solid black;
+	padding: 10px;
+}
+ul#photo_list ul {
+	display: none;
+	background-color: yellow; 
+	position: absolute; 
+	top:40px; 
+	left:0; 
+	width: 100px;
+	padding: 10px;
+	z-index: 100;
+	border:1px solid lime;
+}
+ul#photo_list ul.on {
+	display: block
+}
+ul#photo_list ul > li {
+	border:1px solid orange;
+	padding: 5px;
+}
+ul#photo_list ul > li > a {
+	text-decoration: none;
+	border:1px solid black;
+}
+
+
+/* 창이 420이하로 줄을 때 스마트폰 메뉴 css 변화, 배치 변화 (@media)
+창이 421~768 일때 패드 메뉴 css 변화, 배치 변화 (@media)
+창이 769~ 일때 데스크톱 메뉴 css 변화, 배치 변화 (@media) */
+
+/* 420이하 */
+@media screen and (max-width:420px) {
+    body {border:10px solid yellow;}
+}
+/* 421이상 768이하 */
+@media screen and (min-width: 421px) and (max-width: 768px) {
+    body {border: 10px solid red;}
+}
+
+/* 769이상 */
+@media screen and (min-width: 769px){
+    body {border: 10px solid blue;}
+}
+
+</style>
+</head>
+
+<body>
+<aside>광고</aside>
+<header>
+    <nav>
+        <ul id="photo_list">
+            <li>
+                <a href="">건물</a>
+                <ul class="">
+                    <li><a href="">남산타워</a></li>
+                    <li><a href="">63빌딩</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="">커피</a>
+                <ul>
+                    <li><a href="">아메리카노</a></li>
+                    <li><a href="">카페라테</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="">불꽃놀이</a>
+                <ul>
+                    <li><a href="">한강축제</a></li>
+                    <li><a href="">금강축제</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="" onclick="  ">장미</a>
+                <!-- <ul>
+                    <li><a href="">백장미</a></li>
+                    <li><a href="">흑장미</a></li>
+                </ul> -->
+            </li>
+        </ul>
+    </nav>
+</header>
+<section class="num1">
+    <div class="a">A</div>
+    <div class="b">B</div>
+</section>
+<section class="num2"><p>이제 도착!</p></section>
+<section class="num3"><div></div></section>
+<section class="num4"><div></div></section>
+</body>
+
+<script>
+// 광고를 지날때 헤더메뉴 스티키하기 (scroll) v
+// num3에 왔을 때 등장하는 네모 (scroll) v
+// num4에 왔을 때 변하는 배경색과 등장하는 글자들(scroll) v
+// 창이 420이하로 줄을 때 스마트폰 메뉴 - 클릭 (resize , load)
+// 창이 421~768 일때 패드 메뉴 - 클릭 (resize , load)
+// 창이 769~ 일때 데스크톱 메뉴 - 호버 (resize , load)
+// 창이 420이하로 줄을 때 스마트폰 메뉴 css 변화, 배치 변화 (@media)
+// 창이 421~768 일때 패드 메뉴 css 변화, 배치 변화 (@media)
+// 창이 769~ 일때 데스크톱 메뉴 css 변화, 배치 변화 (@media)
+
+
+const htmlElem = document.querySelector('html');
+const headerElem = document.querySelector('header');
+const pinkElem = document.querySelector('.num3');
+const blueElem = document.querySelector('.num4');
+const ulElem = document.querySelector('#photo_list');
+const menuBtns = document.querySelectorAll('#photo_list > li');
+console.log(menuBtns);
+
+
+window.addEventListener('scroll', scrollWork);
+window.addEventListener('resize', resizeWork);
+window.addEventListener('load', resizeWork);
+
+// 광고를 지날때 헤더메뉴 스티키하기 (scroll) v
+// num3에 왔을 때 등장하는 네모 (scroll) v
+// num4에 왔을 때 변하는 배경색과 등장하는 글자들(scroll) v
+function scrollWork () {
+   console.log(htmlElem.scrollTop);
+   if (htmlElem.scrollTop < 80) {
+        headerElem.className = '';
+   }else if (htmlElem.scrollTop > 80 && htmlElem.scrollTop < 90){
+       headerElem.className = 'on';
+   }else if (htmlElem.scrollTop > 160 && htmlElem.scrollTop < 500){
+       headerElem.className = 'on';
+   }else if (htmlElem.scrollTop > 1000 && htmlElem.scrollTop < 1200){
+       pinkElem.classList.add('on');
+       // num3에 왔을 때 등장하는 네모 (scroll)
+   }else if (htmlElem.scrollTop > 1700 && htmlElem.scrollTop < 1900) {
+       blueElem.classList.add('on');
+       // num4에 왔을 때 변하는 배경색과 등장하는 글자들(scroll) 
+   }
+}
+
+// 창이 420이하로 줄을 때 스마트폰 메뉴 - 클릭 (resize , load)
+// 창이 421~768 일때 패드 메뉴 - 클릭 (resize , load)
+// 창이 769~ 일때 데스크톱 메뉴 - 호버 (resize , load)
+function resizeWork (ev) {
+    ev.preventDefault();
+    if (window.innerWidth < 768) {
+        for (let i =0; i < menuBtns.length; i++) {
+        //li 안에 값이 배열이기 때문에 for 문을 꼭 써서 가져와야함
+        menuBtns[i].removeEventListener('mouseenter', hoverWork);
+        menuBtns[i].removeEventListener('mouseleave', leaveWork);
+        menuBtns[i].addEventListener('click', mobileMenu);
+
+        }
+        
+    }else {
+        for (let i =0; i < menuBtns.length; i++) {
+        menuBtns[i].removeEventListener('click', mobileMenu);
+        menuBtns[i].addEventListener('mouseenter', hoverWork);
+        menuBtns[i].addEventListener('mouseleave', leaveWork);
+
+    }
+
+}
+}
+
+function mobileMenu(ev) {
+    ev.preventDefault();
+    //console.log(this.querySelector('ul'));
+    //this를 쓰면,li 안에 모든 요소를 다 가져옴
+    //하지만 우리는 li 안에 ul정보만 필요하므로, this.querySelector('ul')을 사용.
+    const targetUl = this.querySelector('ul');
+    //console.log(this);
+    
+    if (targetUl === null) return;
+    if (targetUl.className === 'on') {
+        targetUl.className = '';
+    }else {
+        targetUl.className = 'on';
+    }
+}
+
+function hoverWork() {
+    if (!this.querySelector('ul')) return;
+    //ul 정보가 없다면 값이 true 니까 함수 실행하지말고 돌아가기
+    this.querySelector('ul').className = 'on';
+}
+
+function leaveWork () {
+    if (this.querySelector('ul') === null) return;
+    this.querySelector('ul').className = '';
+}
+
+</script>
+
+</html>
